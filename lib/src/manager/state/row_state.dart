@@ -467,3 +467,39 @@ mixin RowState implements IPlutoGridState {
     refRows.insertAll(index, rows);
   }
 }
+
+mixin PlutoGridPageController on RowState {
+  FilteredList<PlutoRow> get refRows => _refRows;
+
+  set refRows(FilteredList<PlutoRow> setRows) {
+    PlutoGridStateManager.initializeRows(refColumns.originalList, setRows);
+    _rows = setRows;
+    _setPage();
+  }
+
+  final int pageSize = 30;
+
+  int _page = 0;
+  List<PlutoRow> _rows;
+
+  int get numOfPages => (_rows.length / pageSize).ceil();
+
+  int get page => _page + 1;
+
+  void nextPage() {
+    _page++;
+    _setPage();
+  }
+
+  void previousPage() {
+    _page--;
+    _setPage();
+  }
+
+  void _setPage() {
+    final startIndex = page * pageSize;
+    final endIndex = (page + 1) * pageSize;
+    final lastIndex = _rows.length - 1;
+    _refRows = _rows.getRange(startIndex, endIndex < lastIndex ? endIndex : lastIndex).toList();
+  }
+}

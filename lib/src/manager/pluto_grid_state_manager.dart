@@ -43,6 +43,7 @@ class PlutoGridState extends PlutoChangeNotifier
         KeyboardState,
         LayoutState,
         RowState,
+        PlutoGridPageController,
         ScrollState,
         SelectingState {}
 
